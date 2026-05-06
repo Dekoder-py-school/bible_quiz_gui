@@ -1,5 +1,4 @@
-import tkinter as tk
-from curses import COLOR_GREEN
+import customtkinter as tk
 from tkinter import ttk
 
 
@@ -13,29 +12,42 @@ class App:
         ]
         self.q_index = 0
 
-        self.root = tk.Tk()
+        self.root = tk.CTk()
         self.root.title("Bible Quiz")
         self.root.geometry("800x400")
-        self.question_label = ttk.Label(self.root)
-        self.answer_field = ttk.Entry(self.root)
-        self.submit_button = ttk.Button(self.root, text="Submit!", command=self.check)
-        self.marking_label = ttk.Label(self.root)
+        tk.set_default_color_theme("./mocha.json")
+
+        self.question_label = tk.CTkLabel(self.root)
+        self.answer_field = tk.CTkEntry(self.root)
+        self.submit_button = tk.CTkButton(self.root, text="Check", command=self.check)
+        self.marking_label = tk.CTkLabel(self.root)
 
         self.question_label.grid(column=0, row=0, columnspan=6)
         self.answer_field.grid(column=0, row=1)
-        self.submit_button.grid(column=0, row=2)
+        self.submit_button.grid(column=1, row=1)
         self.marking_label.grid(column=0, row=3)
 
     def load_question(self) -> None:
-        self.question_label.config(text=self.questions[self.q_index]["q"])
+        if self.q_index > len(self.questions):
+            self.end()
+        else:
+            self.question_label.configure(text=self.questions[self.q_index]["q"])
 
     def check(self) -> None:
         if self.answer_field.get() == self.questions[self.q_index]["a"]:
             self.correct()
 
     def correct(self) -> None:
-        self.submit_button.config(text="Next")
-        self.marking_label.config(text="Correct!", foreground="#40a02b")
+        self.q_index += 1
+        self.submit_button.configure(text="Next")
+        self.submit_button.configure(command=self.load_question)
+        self.marking_label.configure(text="Correct!", foreground="#40a02b")
+
+    def incorrect(self) -> None:
+        pass
+
+    def end(self) -> None:
+        pass
 
     def run(self) -> None:
         self.load_question()
