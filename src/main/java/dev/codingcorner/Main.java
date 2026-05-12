@@ -1,10 +1,11 @@
-package src;
+package dev.codingcorner;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.*;
+
 
 class Main {
 
@@ -20,6 +21,10 @@ class Main {
         panel.setBackground(Colors.BASE);
 
         frame.setVisible(true);
+    }
+
+    private static String[] loadQuestions() {
+        String[] questions = new String[10];
     }
 
     private static void quiz(JPanel panel, GridBagConstraints gbc) {

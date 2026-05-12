@@ -1,4 +1,4 @@
-package src;
+package dev.codingcorner;
 
 import java.awt.Color;
 
