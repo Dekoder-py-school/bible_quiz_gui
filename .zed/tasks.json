@@ -1,7 +1,7 @@
 [
   {
     "label": "Run Java Program",
-    "command": "javac src/Main.java -d build && java -cp build src.Main",
+    "command": "mvn compile && mvn exec:java -Dexec.mainClass=\"dev.codingcorner.Main\"",
     "use_new_terminal": false,
     "allow_concurrent_runs": false,
     "reveal": "no_focus"

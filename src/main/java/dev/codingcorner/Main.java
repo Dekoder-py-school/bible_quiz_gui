@@ -1,11 +1,15 @@
 package dev.codingcorner;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 import javax.swing.*;
-
 
 class Main {
 
@@ -23,12 +27,28 @@ class Main {
         frame.setVisible(true);
     }
 
-    private static String[] loadQuestions() {
-        String[] questions = new String[10];
+    private static List<Question> loadQuestions() throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        List<Question> questions = objectMapper.readValue(
+            new File("questions.json"),
+            new TypeReference<List<Question>>() {}
+        );
+        return questions;
     }
 
     private static void quiz(JPanel panel, GridBagConstraints gbc) {
-        JLabel questionLabel = new JLabel("QUESTION GOES HERE");
+        List<Question> questions;
+        try {
+            questions = loadQuestions();
+        } catch (IOException e) {
+            System.out.println("Error loading question file.");
+            throw new RuntimeException("Error loading question file.", e);
+        }
+
+        int qNum = 0;
+
+        JLabel questionLabel = new JLabel(questions.get(qNum).question);
         questionLabel.setForeground(Colors.TEXT);
 
         JTextField answerField = new JTextField(10);
@@ -38,6 +58,14 @@ class Main {
         markButton.setOpaque(true);
         markButton.setBorderPainted(false);
         markButton.setFocusPainted(false);
+
+        markButton.addActionListener(e -> {
+           String ans = answerField.getText();
+           String realAns = questions.get(qNum).answer;
+           if (ans.equals(realAns)) {
+
+           }
+        });
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -49,7 +77,6 @@ class Main {
 
         gbc.gridx = 1;
         panel.add(markButton, gbc);
-
     }
 
     private static JFrame initFrame(String windowTitle) {
@@ -73,7 +100,6 @@ class Main {
         button.setBorderPainted(false);
         button.setFocusPainted(false);
 
-
         button.addActionListener(e -> {
             panel.removeAll();
             quiz(panel, gbc);
@@ -85,6 +111,5 @@ class Main {
 
         gbc.gridy = 1;
         panel.add(button, gbc);
-
     }
 }
