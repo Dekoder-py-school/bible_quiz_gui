@@ -64,7 +64,7 @@ class Main {
         markButton.addActionListener(e -> {
             String ans = answerField.getText();
             String realAns = questions.get(qNum).answer;
-            if (ans.equals(realAns)) {
+            if (ans.toLowerCase().trim().equals(realAns)) {
                 markLabel.setText("Correct!");
                 markLabel.setForeground(Colors.GREEN);
                 answerField.setText("");

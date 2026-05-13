@@ -1,6 +1,14 @@
 [
   {
-    "q": "example?",
-    "a": "example."
+    "q": "How many books are in the bible?",
+    "a": "73"
+  },
+  {
+    "q": "How many days was Jesus in the desert?",
+    "a": "40"
+  },
+  {
+    "q": "What was Jesus' job before he began to preach?",
+    "a": "carpenter"
   }
 ]
