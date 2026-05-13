@@ -1,7 +1,6 @@
 package dev.codingcorner;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,9 +12,12 @@ import javax.swing.*;
 
 class Main {
 
+    public static int qNum = 0;
+
+    public static JPanel panel = new JPanel(new GridBagLayout());
+
     public static void main(String[] args) {
         JFrame frame = initFrame("Bible Quiz!");
-        JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
 
@@ -46,8 +48,6 @@ class Main {
             throw new RuntimeException("Error loading question file.", e);
         }
 
-        int qNum = 0;
-
         JLabel questionLabel = new JLabel(questions.get(qNum).question);
         questionLabel.setForeground(Colors.TEXT);
 
@@ -59,12 +59,20 @@ class Main {
         markButton.setBorderPainted(false);
         markButton.setFocusPainted(false);
 
-        markButton.addActionListener(e -> {
-           String ans = answerField.getText();
-           String realAns = questions.get(qNum).answer;
-           if (ans.equals(realAns)) {
+        JLabel markLabel = new JLabel();
 
-           }
+        markButton.addActionListener(e -> {
+            String ans = answerField.getText();
+            String realAns = questions.get(qNum).answer;
+            if (ans.equals(realAns)) {
+                markLabel.setText("Correct!");
+                markLabel.setForeground(Colors.GREEN);
+                answerField.setText("");
+                nextQuestion(questionLabel, questions);
+            } else {
+                markLabel.setText("Incorrect! Try again.");
+                markLabel.setForeground(Colors.RED);
+            }
         });
 
         gbc.gridx = 0;
@@ -77,6 +85,10 @@ class Main {
 
         gbc.gridx = 1;
         panel.add(markButton, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(markLabel, gbc);
     }
 
     private static JFrame initFrame(String windowTitle) {
@@ -111,5 +123,20 @@ class Main {
 
         gbc.gridy = 1;
         panel.add(button, gbc);
+    }
+
+    private static void nextQuestion(JLabel label, List<Question> questions) {
+        qNum++;
+
+        if (qNum >= questions.size()) {
+            panel.removeAll();
+
+            label.setText("You win! Thanks for playing :)");
+            panel.add(label);
+            panel.repaint();
+            panel.revalidate();
+        } else {
+            label.setText(questions.get(qNum).question);
+        }
     }
 }
