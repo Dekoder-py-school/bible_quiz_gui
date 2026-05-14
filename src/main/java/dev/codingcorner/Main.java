@@ -12,6 +12,7 @@ import javax.swing.*;
 
 class Main {
 
+    // question number index
     public static int qNum = 0;
 
     public static JPanel panel = new JPanel(new GridBagLayout());
@@ -29,6 +30,7 @@ class Main {
         frame.setVisible(true);
     }
 
+    // use jackson to load questions into a list
     private static List<Question> loadQuestions() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -61,10 +63,12 @@ class Main {
 
         JLabel markLabel = new JLabel();
 
+        // This is called when the button is pressed and checks the answer
         markButton.addActionListener(e -> {
             String ans = answerField.getText();
             String realAns = questions.get(qNum).answer;
-            if (ans.toLowerCase().trim().equals(realAns)) {
+            // Check answer, if it's correct move on.
+            if (!ans.isBlank() && ans.toLowerCase().trim().equals(realAns)) {
                 markLabel.setText("Correct!");
                 markLabel.setForeground(Colors.GREEN);
                 answerField.setText("");
@@ -74,6 +78,8 @@ class Main {
                 markLabel.setForeground(Colors.RED);
             }
         });
+
+        // Place all the widgets in the gridlayout
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -91,6 +97,7 @@ class Main {
         panel.add(markLabel, gbc);
     }
 
+    // Set the frame (window) up
     private static JFrame initFrame(String windowTitle) {
         JFrame frame = new JFrame();
 
@@ -101,6 +108,7 @@ class Main {
         return frame;
     }
 
+    // Show the start screen, load quiz when start is clicked
     private static void startScreen(JPanel panel, GridBagConstraints gbc) {
         JLabel label = new JLabel("Bible Quiz");
         JButton button = new JButton("START!");
