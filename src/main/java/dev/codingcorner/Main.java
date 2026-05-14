@@ -65,18 +65,12 @@ class Main {
 
         // This is called when the button is pressed and checks the answer
         markButton.addActionListener(e -> {
-            String ans = answerField.getText();
-            String realAns = questions.get(qNum).answer;
-            // Check answer, if it's correct move on.
-            if (!ans.isBlank() && ans.toLowerCase().trim().equals(realAns)) {
-                markLabel.setText("Correct!");
-                markLabel.setForeground(Colors.GREEN);
-                answerField.setText("");
-                nextQuestion(questionLabel, questions);
-            } else {
-                markLabel.setText("Incorrect! Try again.");
-                markLabel.setForeground(Colors.RED);
-            }
+            onAnswer(answerField, questions, markLabel, questionLabel);
+        });
+
+        // This is called when enter is pressed in the text input
+        answerField.addActionListener(e -> {
+            onAnswer(answerField, questions, markLabel, questionLabel);
         });
 
         // Place all the widgets in the gridlayout
@@ -106,6 +100,21 @@ class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         return frame;
+    }
+
+    private static void onAnswer(JTextField answerField, List<Question> questions, JLabel markLabel, JLabel questionLabel) {
+        String ans = answerField.getText();
+        String realAns = questions.get(qNum).answer;
+        // Check answer, if it's correct move on.
+        if (!ans.isBlank() && ans.toLowerCase().trim().equals(realAns)) {
+            markLabel.setText("Correct!");
+            markLabel.setForeground(Colors.GREEN);
+            answerField.setText("");
+            nextQuestion(questionLabel, questions);
+        } else {
+            markLabel.setText("Incorrect! Try again.");
+            markLabel.setForeground(Colors.RED);
+        }
     }
 
     // Show the start screen, load quiz when start is clicked
